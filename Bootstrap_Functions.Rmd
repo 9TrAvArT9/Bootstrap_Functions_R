@@ -12,6 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Bootstrap Functions 
 
 ```{r}
+#Inverse cumulative distribution function.
+#Returns the value of a desired percentile from a given dataset. 
 icdf = function(data,a){
   if(a <= 0.5){
     i = floor(a*(length(data)+1))
