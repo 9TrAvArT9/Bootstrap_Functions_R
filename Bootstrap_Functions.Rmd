@@ -11,4 +11,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Bootstrap Functions 
 
-This is only a first attempt to commit an .Rmd file. 
+```{r}
+icdf = function(data,a){
+  if(a <= 0.5){
+    i = floor(a*(length(data)+1))
+  }else{
+    i = (length(data)+1) - floor((1-a)*(length(data)+1))
+  }
+  data = sort(data)
+  return(data[i])
+}
+```
+
