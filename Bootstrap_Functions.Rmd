@@ -7,6 +7,9 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(gt)
+library(knitr)
 ```
 
 ## Bootstrap Functions 
@@ -23,5 +26,18 @@ icdf = function(data,a){
   data = sort(data)
   return(data[i])
 }
+```
+
+For example, Table 1 gives the serum cholesterol levels (mg per 100 mL of blood) for 25 males and is taken from Koopmans (1987). Suppose we wanted to find the $25^{th}$ percentile, or the $50^{th}$ percentile (median).
+
+```{r, echo=FALSE}
+table1 = matrix(c(106,138,146,153,153,158,160,174,180,180,190,191,198,203,207,215,217,223,241,242,251,260,265,280,305), nrow = 5, ncol = 5)
+
+gt(as.data.frame(table1)) %>% 
+  tab_header(
+    title = "Serum Cholesterol Levels",
+    subtitle = "n = 25 males"
+  ) %>% 
+  tab_options(column_labels.hidden = TRUE)
 ```
 
