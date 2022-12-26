@@ -5,11 +5,11 @@ date: "2022-12-24"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, echo=FALSE}
 library(dplyr)
 library(gt)
 library(knitr)
+opts_chunk$set(echo = TRUE)
 ```
 
 ## Bootstrap Functions 
