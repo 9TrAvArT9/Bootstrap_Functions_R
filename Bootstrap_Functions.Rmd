@@ -12,7 +12,7 @@ library(knitr)
 opts_chunk$set(echo = TRUE)
 ```
 
-## Bootstrap Functions 
+## Distribution Functions 
 
 ```{r}
 #Inverse cumulative distribution function.
@@ -43,6 +43,29 @@ cdf = function(data,a){
 ```{r}
 #Large population: Generally N/n > 20, we sample *with* replacement from a single copy of the sample
 
+#data - a data frame
+#n - the sample size 
+#b- the number of bootstrap iterations, typically 1000+
+#This particular function draws a series of *b* random samples of size *n* from the original sample data and
+#Determines the median of each RS. This develops the bootstrap distribution of the population median.
+#This function reports the mean of this distribution, which provides a statistically sound estimate of the unknown population median. 
+#We also report the standard error of the distribution, the bias of the estimator, and Normal, Symetrric, and Non-Symetric confidence intervals of the estimate. 
 
+bootmedplus = function(data,n,b){
+  BTmedian = rep(0,b);
+  for (i in 1:b) {
+  BTsamp = sample(data, n, replace = T)
+  BTmedian[i] = icdf(BTsamp,0.5)
+  };
+  BTmedian = sort(BTmedian);
+  Bbtmedmean = mean(BTmedian);
+  BbtSE = sqrt((1/(b-1))*sum((BTmedian - mean(BTmedian))**2))
+  NormalCI = c(icdf(data,0.5)-BbtSE*1.645, icdf(data,0.5) + BbtSE*1.645)
+  SCI = c(BTmedian[0.05*b], BTmedian[0.95*b + 1])
+  NSCI = c(2*icdf(data,0.5) - BTmedian[0.95*b + 1], 2*icdf(data,0.5) - BTmedian[0.05*b])
+  bias = mean(BTmedian) - icdf(data,0.5)
+  output = list("SE" = BbtSE,"bias" = bias,"NormalCI" = NormalCI,"SCI" = SCI,"NSCI" = NSCI)
+  return(output)
+}
 ```
 
