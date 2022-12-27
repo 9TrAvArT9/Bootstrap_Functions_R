@@ -11,9 +11,9 @@
 
 <meta name="author" content="R. Travis Merrill" />
 
-<meta name="date" content="2022-12-24" />
+<meta name="date" content="2022-12-27" />
 
-<title>Bootstrap_Functions</title>
+<title>Bootstrap Function Examples</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,35 +350,14 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Bootstrap_Functions</h1>
+<h1 class="title toc-ignore">Bootstrap Function Examples</h1>
 <h4 class="author">R. Travis Merrill</h4>
-<h4 class="date">2022-12-24</h4>
+<h4 class="date">2022-12-27</h4>
 
 </div>
 
 
-<div id="bootstrap-functions" class="section level2">
-<h2>Bootstrap Functions</h2>
-<pre class="r"><code>#Inverse cumulative distribution function.
-#Returns the value of a desired percentile from a given dataset. 
-icdf = function(data,a){
-  if(a &lt;= 0.5){
-    i = floor(a*(length(data)+1))
-  }else{
-    i = (length(data)+1) - floor((1-a)*(length(data)+1))
-  }
-  data = sort(data)
-  return(data[i])
-}</code></pre>
-<pre class="r"><code>#Cumulative Distribution Function.
-#This reports the proportion of values that are less than or equal to a given value.
-cdf = function(data,a){
-  data = sort(data)
-  vec = which(data &lt;= a)
-  b = (length(vec)/length(data))
-  return(b)
-}</code></pre>
-</div>
+
 
 
 

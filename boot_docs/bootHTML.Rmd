@@ -1,0 +1,16 @@
+---
+title: "Bootstrap Function Examples"
+knit: (function(input_file, encoding) {
+    rmarkdown::render(input_file,
+      encoding=encoding,
+      output_file=file.path(dirname(input_file), 'index.html'))})
+author: "R. Travis Merrill"
+date: "2022-12-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
