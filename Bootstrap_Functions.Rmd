@@ -40,7 +40,7 @@ cdf = function(data,a){
 ```
 
 ##Estimating the population distribution when considering population size. 
-##I love Sandy
+
 ```{r}
 #Large population: Generally N/n > 20, we sample *with* replacement from a single copy of the sample
 
