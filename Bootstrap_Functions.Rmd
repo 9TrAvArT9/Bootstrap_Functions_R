@@ -78,6 +78,7 @@ bootmedplus = function(data,n,b){
 
 ##Small population with N/n = a < 20 and an *integer*. We sample *without* replacement from *a* copies of the sample. 
 ```{r}
+#Example 2
 data = rep(data, a)
 
 #This particular function estimates the IQR from multivariate data sets.
@@ -95,4 +96,36 @@ bootIQR = function(data,n,b){
 
 ```
 
-#For populations such that $N/n$
+#For populations such that N/n = b < 20, b *not* an integer, we use the methods of Booth, Butler, and Hall (1994). The idea is to randomly adjust the composition of the population estimate several times in an attempt to balance out case representation, and avoid bias. 
+
+```{r}
+#Example 3
+#BT is the number of blocks, typically 10
+#m is the number of samples within each block 
+#This particular function determines an estimate of the population distribution of medians, and returns variase statistics and confidence intervals. 
+
+BBHblockdata = function(data,N,n,BT,m){
+  B = BT*m
+  BTmed = rep(0,B);
+  a = floor(N/n);
+  k = N - (n*a);
+  for (j in 1:BT){
+    blockpop = c(rep(data,a),sample(data,k, replace = F));
+    for (i in 1:m) {
+      blocksamp = c(blockpop,sample(blockpop,n,replace = F));
+      BTmed[i] = icdf(blocksamp,0.5);
+    }
+  }
+  BTmedian = sort(BTmedian)
+  Bbtmedmean = mean(BTmedian)
+  BbtSE = sqrt((1/(b-1))*sum((BTmedian - mean(BTmedian))**2))
+  NormalCI = c(icdf(data,0.5)-BbtSE*1.645, icdf(data,0.5) + BbtSE*1.645)
+  SCI = c(BTmedian[0.05*b], BTmedian[0.95*b + 1])
+  NSCI = c(2*icdf(data,0.5) - BTmedian[0.95*b + 1], 2*icdf(data,0.5) - BTmedian[0.05*b])
+  bias = mean(BTmedian) - icdf(data,0.5)
+  output = list("SE" = BbtSE,"bias" = bias,"NormalCI" = NormalCI,"SCI" = SCI,"NSCI" = NSCI)
+  return(output)
+}
+
+```
+
