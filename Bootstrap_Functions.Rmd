@@ -99,7 +99,6 @@ bootIQR = function(data,n,b){
 #For populations such that N/n = b < 20, b *not* an integer, we use the methods of Booth, Butler, and Hall (1994). The idea is to randomly adjust the composition of the population estimate several times in an attempt to balance out case representation, and avoid bias. 
 
 ```{r, echo=FALSE}
-#Example 3
 #BT is the number of blocks, typically 10
 #m is the number of samples within each block 
 #This particular function determines an estimate of the population distribution of medians, and returns variase statistics and confidence intervals. 
@@ -135,15 +134,20 @@ BBHmedplus = function(data,N,n,BT,m){
 ```{r}
 #This synthesized examples pertain to a sample of 7 laboratory mice. Suppose these scores pertain to the post surgery survival time, in days, of mice after given pre-surgical treatment.
 
+
 micedata = c(94, 197, 16, 38, 99, 141, 23);
 
+
+bootmedplus(micedata,7,2500)
 #Suppose we know that N = 28. Then we have 
 
 micedata1 = rep(micedata,28/7)
-median(micedata1)
+
 bootmedplus(micedata1,7,2500)
 
 #Now suppose that N = 31. Then we have 
 BBHmedplus(micedata, 31, 7, 10, 250)
+
+#Notice the similarities in the outputs of these two methods. 
 ```
 
