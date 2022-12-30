@@ -95,3 +95,4 @@ bootIQR = function(data,n,b){
 
 ```
 
+#For populations such that $N/n$
