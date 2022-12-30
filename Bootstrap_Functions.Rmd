@@ -129,7 +129,7 @@ BBHmedplus = function(data,N,n,BT,m){
 ```
 
 
-### Code for associated Examples. See README for an interpretable output HTML. 
+### Examples using functions.   
 
 ```{r}
 #This synthesized examples pertain to a sample of 7 laboratory mice. Suppose these scores pertain to the post surgery survival time, in days, of mice after given pre-surgical treatment.

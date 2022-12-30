@@ -19,7 +19,7 @@ the methods of Booth, Butler, and Hall (1994). The idea is to randomly
 adjust the composition of the population estimate several times in an
 attempt to balance out case representation, and avoid bias.
 
-### Code for associated Examples. See README for an interpretable output HTML.
+### Examples using functions.
 
 ``` r
 #This synthesized examples pertain to a sample of 7 laboratory mice. Suppose these scores pertain to the post surgery survival time, in days, of mice after given pre-surgical treatment.
@@ -32,13 +32,13 @@ bootmedplus(micedata,7,2500)
 ```
 
     ## $SE
-    ## [1] 38.17082
+    ## [1] 38.84282
     ## 
     ## $bias
-    ## [1] -13.6584
+    ## [1] -14.3252
     ## 
     ## $NormalCI
-    ## [1]  31.209 156.791
+    ## [1]  30.10356 157.89644
     ## 
     ## $SCI
     ## [1]  23 141
@@ -55,13 +55,13 @@ bootmedplus(micedata1,7,2500)
 ```
 
     ## $SE
-    ## [1] 37.39771
+    ## [1] 38.01481
     ## 
     ## $bias
-    ## [1] -14.6728
+    ## [1] -14.4
     ## 
     ## $NormalCI
-    ## [1]  32.48077 155.51923
+    ## [1]  31.46563 156.53437
     ## 
     ## $SCI
     ## [1]  23 141
@@ -75,13 +75,13 @@ BBHmedplus(micedata, 31, 7, 10, 250)
 ```
 
     ## $SE
-    ## [1] 35.38984
+    ## [1] 33.42869
     ## 
     ## $bias
-    ## [1] -14.4976
+    ## [1] -15.8912
     ## 
     ## $NormalCI
-    ## [1]  35.78372 152.21628
+    ## [1]  39.0098 148.9902
     ## 
     ## $SCI
     ## [1]  23 141
