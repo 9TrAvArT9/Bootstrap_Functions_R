@@ -14,7 +14,7 @@ opts_chunk$set(echo = TRUE)
 
 ## Distribution Functions 
 
-```{r}
+```{r, echo=FALSE}
 #Inverse cumulative distribution function.
 #Returns the value of a desired percentile from a given dataset. 
 icdf = function(data,a){
@@ -28,7 +28,7 @@ icdf = function(data,a){
 }
 ```
 
-```{r}
+```{r, echo=FALSE}
 #Cumulative Distribution Function.
 #This reports the proportion of values that are less than or equal to a given value.
 cdf = function(data,a){
@@ -43,7 +43,7 @@ cdf = function(data,a){
 <br>
 
 #Large population: Generally N/n > 20, we sample *with* replacement from a *single* copy of the sample
-```{r}
+```{r, echo=FALSE}
 
 #data - a data frame
 #n - the sample size 
@@ -77,9 +77,9 @@ bootmedplus = function(data,n,b){
 ```
 
 ##Small population with N/n = a < 20 and an *integer*. We sample *without* replacement from *a* copies of the sample. 
-```{r}
-#Example 2
-data = rep(data, a)
+```{r, echo=FALSE}
+
+#data = rep(data, a)
 
 #This particular function estimates the IQR from multivariate data sets.
 #It holds each observation's combination of covariates as it samples. 
@@ -98,34 +98,52 @@ bootIQR = function(data,n,b){
 
 #For populations such that N/n = b < 20, b *not* an integer, we use the methods of Booth, Butler, and Hall (1994). The idea is to randomly adjust the composition of the population estimate several times in an attempt to balance out case representation, and avoid bias. 
 
-```{r}
+```{r, echo=FALSE}
 #Example 3
 #BT is the number of blocks, typically 10
 #m is the number of samples within each block 
 #This particular function determines an estimate of the population distribution of medians, and returns variase statistics and confidence intervals. 
 
-BBHblockdata = function(data,N,n,BT,m){
-  B = BT*m
-  BTmed = rep(0,B);
+BBHmedplus = function(data,N,n,BT,m){
+  b = BT*m;
+  BTmed = c();
   a = floor(N/n);
   k = N - (n*a);
   for (j in 1:BT){
     blockpop = c(rep(data,a),sample(data,k, replace = F));
     for (i in 1:m) {
-      blocksamp = c(blockpop,sample(blockpop,n,replace = F));
-      BTmed[i] = icdf(blocksamp,0.5);
+      blocksamp = c(sample(blockpop,n));
+      BTmed = c(BTmed,icdf(blocksamp,0.5));
     }
   }
-  BTmedian = sort(BTmedian)
-  Bbtmedmean = mean(BTmedian)
-  BbtSE = sqrt((1/(b-1))*sum((BTmedian - mean(BTmedian))**2))
+  BTmed = sort(BTmed)
+  Bbtmedmean = mean(BTmed)
+  BbtSE = sqrt((1/(b-1))*sum((BTmed - mean(BTmed))**2))
   NormalCI = c(icdf(data,0.5)-BbtSE*1.645, icdf(data,0.5) + BbtSE*1.645)
-  SCI = c(BTmedian[0.05*b], BTmedian[0.95*b + 1])
-  NSCI = c(2*icdf(data,0.5) - BTmedian[0.95*b + 1], 2*icdf(data,0.5) - BTmedian[0.05*b])
-  bias = mean(BTmedian) - icdf(data,0.5)
+  SCI = c(BTmed[0.05*b], BTmed[0.95*b + 1])
+  NSCI = c(2*icdf(data,0.5) - BTmed[0.95*b + 1], 2*icdf(data,0.5) - BTmed[0.05*b])
+  bias = mean(BTmed) - icdf(data,0.5)
   output = list("SE" = BbtSE,"bias" = bias,"NormalCI" = NormalCI,"SCI" = SCI,"NSCI" = NSCI)
   return(output)
 }
 
+```
+
+
+### Code for associated Examples. See README for an interpretable output HTML. 
+
+```{r}
+#This synthesized examples pertain to a sample of 7 laboratory mice. Suppose these scores pertain to the post surgery survival time, in days, of mice after given pre-surgical treatment.
+
+micedata = c(94, 197, 16, 38, 99, 141, 23);
+
+#Suppose we know that N = 28. Then we have 
+
+micedata1 = rep(micedata,28/7)
+median(micedata1)
+bootmedplus(micedata1,7,2500)
+
+#Now suppose that N = 31. Then we have 
+BBHmedplus(micedata, 31, 7, 10, 250)
 ```
 
