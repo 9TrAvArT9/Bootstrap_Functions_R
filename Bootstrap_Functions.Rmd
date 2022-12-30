@@ -40,9 +40,10 @@ cdf = function(data,a){
 ```
 
 ##Estimating the population distribution when considering population size. 
+<br>
 
+#Large population: Generally N/n > 20, we sample *with* replacement from a *single* copy of the sample
 ```{r}
-#Large population: Generally N/n > 20, we sample *with* replacement from a single copy of the sample
 
 #data - a data frame
 #n - the sample size 
@@ -51,6 +52,8 @@ cdf = function(data,a){
 #Determines the median of each RS. This develops the bootstrap distribution of the population median.
 #This function reports the mean of this distribution, which provides a statistically sound estimate of the unknown population median. 
 #We also report the standard error of the distribution, the bias of the estimator, and Normal, Symetrric, and Non-Symetric confidence intervals of the estimate. 
+
+data = data;
 
 bootmedplus = function(data,n,b){
   BTmedian = rep(0,b);
@@ -61,12 +64,34 @@ bootmedplus = function(data,n,b){
   BTmedian = sort(BTmedian);
   Bbtmedmean = mean(BTmedian);
   BbtSE = sqrt((1/(b-1))*sum((BTmedian - mean(BTmedian))**2))
+  #Normal population distribution
   NormalCI = c(icdf(data,0.5)-BbtSE*1.645, icdf(data,0.5) + BbtSE*1.645)
+  #Symmetric population distribution 
   SCI = c(BTmedian[0.05*b], BTmedian[0.95*b + 1])
+  #Non-symmetric (no assumption) on pop distribution 
   NSCI = c(2*icdf(data,0.5) - BTmedian[0.95*b + 1], 2*icdf(data,0.5) - BTmedian[0.05*b])
   bias = mean(BTmedian) - icdf(data,0.5)
   output = list("SE" = BbtSE,"bias" = bias,"NormalCI" = NormalCI,"SCI" = SCI,"NSCI" = NSCI)
   return(output)
 }
+```
+
+##Small population with N/n = a < 20 and an *integer*. We sample *without* replacement from *a* copies of the sample. 
+```{r}
+data = rep(data, a)
+
+#This particular function estimates the IQR from multivariate data sets.
+#It holds each observation's combination of covariates as it samples. 
+#n and b are interpreted as before.
+
+bootIQR = function(data,n,b){
+  bootiqr = rep(0,b)
+  for (i in 1:b) {
+  samp = data[sample(seq_len(nrow(data)),n,replace = TRUE),]
+  bootiqr[i] = icdf(samp[,1],0.75)-icdf(samp[,1],0.25)
+  }
+  return(bootiqr)
+}
+
 ```
 
