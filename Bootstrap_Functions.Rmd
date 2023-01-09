@@ -9,6 +9,7 @@ output: github_document
 library(dplyr)
 library(gt)
 library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
 opts_chunk$set(echo = TRUE)
 ```
 
